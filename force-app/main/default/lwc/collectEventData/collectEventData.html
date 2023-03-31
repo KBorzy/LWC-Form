@@ -1,0 +1,15 @@
+<template>
+  <lightning-card title="Formularz wydarzenia online" icon-name="standard:event">
+    <div class="slds-p-around_medium">
+      <lightning-input type="text" label="Nazwa" name="wydarzenieName" value={wydarzenieName} onchange={handleWydarzenieNameChange}></lightning-input> 
+      <lightning-input type="date" label="Data" name="wydarzenieData" value={wydarzenieData} onchange={handleWydarzenieDataChange}></lightning-input> 
+      <lightning-input type="text" label="Miejsce" name="wydarzenieMiejsce" value={wydarzenieMiejsce} onchange={handleWydarzenieMiejsceChange}></lightning-input> 
+      <lightning-input type="textarea" label="Opis" name="wydarzenieOpis" value={wydarzenieOpis} onchange={handleWydarzenieOpisChange}></lightning-input> 
+      <lightning-input type="text" label="Imię" name="uczestnikImie" value={uczestnikImie} onchange={handleUczestnikImieChange}></lightning-input> 
+      <lightning-input type="text" label="Nazwisko" name="uczestnikNazwisko" value={uczestnikNazwisko} onchange={handleUczestnikNazwiskoChange}></lightning-input> 
+      <lightning-input type="date" label="Data urodzenia" name="uczestnikDataUrodzenia" value={uczestnikDataUrodzenia} onchange={handleUczestnikDataUrodzeniaChange}></lightning-input> 
+      <lightning-input type="email" label="Email" name="uczestnikEmail" value={uczestnikEmail} onchange={handleUczestnikEmailChange}></lightning-input> 
+      <lightning-button class="slds-m-top_small" label="Zapisz wydarzenie" onclick={handleSubmit}></lightning-button>
+    </div>
+  </lightning-card>
+</template>
