@@ -45,7 +45,7 @@ export default class LwcForm extends LightningElement {
     this.uczestnikEmail = event.target.value;
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     if (!this.wydarzenieName || !this.wydarzenieData || !this.wydarzenieMiejsce || !this.wydarzenieOpis || !this.uczestnikImie || !this.uczestnikNazwisko ||
         !this.uczestnikDataUrodzenia || !this.uczestnikEmail) {
         this.dispatchEvent(
@@ -57,41 +57,30 @@ export default class LwcForm extends LightningElement {
         );
         return;
         }
-    let createdEventId;  
-    createEvent({
-      name: this.wydarzenieName,
-      date: this.wydarzenieData,
-      place: this.wydarzenieMiejsce,
-      description: this.wydarzenieOpis
       
-    })
-    .then(wydarzenie => {
-        createdEventId = wydarzenie.Id;
-        createUczestnik({
-            wydarzenieId: createdEventId,        
-            firstName: this.uczestnikImie,
-            lastName: this.uczestnikNazwisko,
-            birthdate: this.uczestnikDataUrodzenia,
-            email: this.uczestnikEmail
-        })
-      .then(() => {
-        this.dispatchEvent(new ShowToastEvent({
-          title: 'Sukces!',
-          message: 'Wydarzenie i uczestnik zostały utworzone.',
-          variant: 'success'
-        }));
-      })
-      .catch(error => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Błąd',
-            message: error.body.message,
-            variant: 'error'
-          })
-        );
+    try {
+      const createdEventId = await createEvent({
+        name: this.wydarzenieName,
+        date: this.wydarzenieData,
+        place: this.wydarzenieMiejsce,
+        description: this.wydarzenieOpis
       });
-    })
-    .catch(error => {
+      
+      
+      await createUczestnik({
+        wydarzenieId: createdEventId.Id,  
+        firstName: this.uczestnikImie,
+        lastName: this.uczestnikNazwisko,
+        birthdate: this.uczestnikDataUrodzenia,
+        email: this.uczestnikEmail
+      });
+
+      this.dispatchEvent(new ShowToastEvent({
+        title: 'Sukces!',
+        message: 'Wydarzenie i uczestnik zostały utworzone.',
+        variant: 'success'
+      }));
+    } catch (error) {
       this.dispatchEvent(
         new ShowToastEvent({
           title: 'Błąd',
@@ -99,6 +88,6 @@ export default class LwcForm extends LightningElement {
           variant: 'error'
         })
       );
-    });
+    }
   }
 }

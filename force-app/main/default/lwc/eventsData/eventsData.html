@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="Lista wydarzeń" icon-name="custom:custom14">
+        <template if:true={events}>
+            <lightning-layout>
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                    <lightning-tile>
+                        <h3>Wybierz wydarzenie:</h3>
+                        <template for:each={events} for:item="event">
+                            <p key={event.Id} data-id={event.Id} onclick={handleClick}>{event.Name}</p>
+                        </template>
+                    </lightning-tile>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="6" padding="around-small">
+                    <template if:true={attendees}>
+                        <lightning-tile>
+                            <h3>Lista uczestników:</h3>
+                            <template for:each={attendees} for:item="attendee">
+                                <p key={attendee.Id}>{attendee.Imie__c} {attendee.Nazwisko__c}</p>
+                            </template>
+                        </lightning-tile>
+                    </template>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+        <template if:false={events}>
+            <p>Nie znaleziono żadnych wydarzeń.</p>
+        </template>
+    </lightning-card>
+</template>

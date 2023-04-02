@@ -1,13 +1,22 @@
 public with sharing class EventController {
     @AuraEnabled
     public static Wydarzenie__c createEvent(String name, Date eventDate, String place, String description) {
-        Wydarzenie__c event = new Wydarzenie__c();
-        event.Name = name;
-        event.Data__c = eventDate;
-        event.Miejsce__c = place;
-        event.Opis__c = description;
-        insert event;
-        return event;
+        List<Wydarzenie__c> w = [SELECT Id, Name FROM Wydarzenie__c WHERE Name = :name];
+        if(w.size() > 0) {
+            system.debug(w[0].Id);
+            return w[0];
+        }
+        else {
+            Wydarzenie__c event = new Wydarzenie__c();
+            event.Name = name;
+            event.Data__c = eventDate;
+            event.Miejsce__c = place;
+            event.Opis__c = description;
+            System.debug(event);
+            insert event;
+            return event;
+        }    
+
     }
     
     @AuraEnabled
@@ -25,5 +34,15 @@ public with sharing class EventController {
         } else {
             throw new AuraHandledException('Uczestnik nie jest pełnoletni!');
         }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Wydarzenie__c> getEventsList() {
+        return [SELECT Name, Data__c, Miejsce__c FROM Wydarzenie__c LIMIT 10];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Uczestnik__c> getRelatedAttendee(Id wydarzenieId) {
+        return [SELECT Imie__c, Nazwisko__c, Wydarzenie__r.Name FROM Uczestnik__c WHERE Wydarzenie__c = :wydarzenieId];
     }
 }
